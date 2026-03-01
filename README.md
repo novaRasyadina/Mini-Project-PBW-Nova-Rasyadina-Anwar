@@ -847,7 +847,7 @@ kode di atas yaitu Media ini aktif saat lebar layar di bawah 768px yaitu ukuran 
 
 <img width="960" height="908" alt="{321C2C09-3174-4168-ADA4-4233BA4E3B56}" src="https://github.com/user-attachments/assets/73edc841-31ae-42e1-9002-8bd2381ae909" />
 
-##### Fotur togler jika tampilan diperkecil
+##### Fitur togler jika tampilan diperkecil
 
 <img width="961" height="701" alt="{EC4CAA0D-69A0-49CD-B328-9AEB83B99428}" src="https://github.com/user-attachments/assets/12e6e75d-17c5-4f90-afd0-952a27e78577" />
 
@@ -865,7 +865,7 @@ kode di atas yaitu Media ini aktif saat lebar layar di bawah 768px yaitu ukuran 
 
 <img width="1920" height="909" alt="{ECBAD2BE-3AF4-40E0-A9C4-4DBD769BA3EB}" src="https://github.com/user-attachments/assets/1ee79049-ccc6-4f66-a447-c90956ce54e5" />
 
-##### Fotur filtering berdasarkan kategori karya
+##### Fitur filtering berdasarkan kategori karya
 
 <img width="1920" height="920" alt="{259D04E9-2833-4372-848C-1D319AA9FAA8}" src="https://github.com/user-attachments/assets/d8a3bdba-85af-4e10-90c6-032060bc752c" />
 <img width="961" height="913" alt="{73305E5C-C545-4C81-84BB-328E37AA2ACF}" src="https://github.com/user-attachments/assets/d68a1986-8e06-4579-82f1-12985bbd11ce" />
