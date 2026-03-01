@@ -338,3 +338,504 @@ gallery: [
         ],
     }),
 ```
+Array gallery berisi semua data karya. id adalah identitas unik tiap karya. type digunakan untuk filter dan harus sesuai dengan key di array filters. cat adalah label kategori yang ditampilkan di overlay dan lightbox. title dan desc adalah judul dan deskripsi karya. tags adalah array chip kecil di lightbox. img adalah nama file gambar yang harus ada di folder project. kemudian pada baris kode "certs" dimana Array certs berisi data sertifikat. type menentukan warna garis atas card melalui class dinamis Vue. title adalah nama sertifikat, issuer adalah penerbit, year adalah tahun, desc adalah deskripsi singkat, dan icon adalah class Bootstrap Icons yang dirender sebagai icon di pojok kiri atas card.
+
+```indeks.HTML
+computed: {
+        shown() { return this.filter==='all' ? this.gallery : this.gallery.filter(g=>g.type===this.filter); },
+        cur()   { return this.shown[this.idx] || null; }
+    },
+```
+computed adalah properti Vue yang dihitung ulang otomatis setiap kali data yang digunakan berubah. shown() menyaring array gallery berdasarkan nilai filter yang aktif. Jika filter 'all' maka tampilkan semua, jika tidak maka filter berdasarkan type. cur() mengembalikan objek gambar yang sedang aktif di lightbox berdasarkan idx, atau null jika tidak ada.
+
+```indeks.HTML
+methods: {
+        open(i) { this.idx=i; this.lb=true;  document.body.style.overflow='hidden'; },
+        close()  { this.lb=false;            document.body.style.overflow=''; },
+        next()   { this.idx=(this.idx+1) % this.shown.length; },
+        prev()   { this.idx=(this.idx-1+this.shown.length) % this.shown.length; },
+    },
+```
+methods berisi semua fungsi yang bisa dipanggil dari HTML maupun JavaScript. open(i) membuka lightbox dengan mengubah lb menjadi true dan menyimpan index gambar yang diklik, lalu mengunci scroll halaman agar tidak bisa scroll saat lightbox terbuka. close() menutup lightbox dan mengaktifkan kembali scroll halaman. next() berpindah ke gambar berikutnya menggunakan operator modulo % agar setelah gambar terakhir kembali ke gambar pertama. prev() berpindah ke gambar sebelumnya, ditambah this.shown.length sebelum modulo agar tidak bernilai negatif.
+
+```indeks.HTML
+mounted() {
+        window.addEventListener('scroll', () =>
+        document.getElementById('nav').classList.toggle('scrolled', scrollY > 50));
+        document.addEventListener('keydown', e => {
+        if (!this.lb) return;
+        if (e.key==='ArrowRight') this.next();
+        if (e.key==='ArrowLeft')  this.prev();
+        if (e.key==='Escape')     this.close();
+        });
+```
+mounted() adalah lifecycle hook Vue yang dijalankan otomatis satu kali saat halaman selesai dimuat. Kode ini menambahkan event listener scroll pada window. Setiap kali halaman di-scroll, classList.toggle('scrolled', scrollY > 50) akan menambah class scrolled ke navbar jika posisi scroll lebih dari 50px, dan menghapusnya jika kurang dari 50px. Kemudian adapun Event listener keyboard ini aktif di seluruh halaman. if (!this.lb) return memastikan fungsi hanya berjalan saat lightbox sedang terbuka. Jika lightbox terbuka, tombol ArrowRight memanggil next(), ArrowLeft memanggil prev(), dan Escape memanggil close() untuk menutup lightbox.
+
+```indeks.HTML
+const aboutEl = document.getElementById('about');
+        new IntersectionObserver(([entry]) => {
+        if (entry.isIntersecting)
+            aboutEl.querySelectorAll('.skill-bar').forEach(b =>
+            (b.style.width = b.getAttribute('aria-valuenow') + '%'));
+        }, { threshold: 0.2 }).observe(aboutEl);
+    }
+```
+IntersectionObserver merupakan API browser untuk mendeteksi saat suatu elemen masuk ke area tampilan layar. Di sini digunakan untuk mengamati section About. threshold: 0.2 artinya callback dijalankan saat 20% dari section About terlihat di layar. Saat terlihat, semua elemen .skill-bar dicari lalu lebar masing-masing diubah ke nilai aria-valuenow yang sudah disimpan dari data Vue, sehingga progress bar beranimasi dari 0% ke nilai sebenarnya.
+
+```indeks.HTML
+ }).mount('#app');
+    </script>
+    </body>
+    </html>
+```
+.mount('#app') adalah perintah terakhir yang menghubungkan seluruh aplikasi Vue ke elemen HTML dengan id="app". Semua fitur Vue seperti v-for, {{ }}, @click, dan lainnya hanya aktif di dalam elemen tersebut.
+
+### CSS
+#### WarnA dan Riset
+```style.CSS
+:root {
+    --cream:    #faf6f0;
+    --warm:     #f3ece0;
+    --border:   rgba(124,92,62,.15);
+    --rose:     #c4796b;
+    --brown:    #7c5c3e;
+    --brown2:   #a07850;
+    --dark:     #2d2018;
+    --mid:      #5a3e28;
+    --light:    #9a7e68;
+    --shadow:   rgba(45,32,24,.12);
+    --r:        14px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--cream); color: var(--dark); font-family: 'Inter', sans-serif; font-weight: 300; line-height: 1.7; overflow-x: hidden; }
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-thumb { background: var(--brown2); border-radius: 4px; }
+```
+kode :root adalah selector khusus CSS untuk menyimpan variabel global yang bisa dipakai di seluruh file CSS. Variabel dipanggil menggunakan var(--nama). semua warna menggunakan palet coklat hangat dan krem agar tampilan terasa elegan dan natural. --r adalah variabel untuk border-radius yang dipakai berulang di berbagai elemen. Selanjutnya ada barisan kode box-sizing: border-box membuat padding dan border dihitung di dalam ukuran elemen, bukan di luar. margin: 0; padding: 0 menghapus jarak bawaan browser. scroll-behavior: smooth membuat scroll antar section terasa halus. overflow-x: hidden mencegah scroll horizontal. Scrollbar dikustomisasi menjadi tipis 5px berwarna coklat.
+```style.CSS
+h1, h2, h3, h4, h5 { font-family: 'Playfair Display', serif; }
+    em { font-style: italic; color: var(--rose); }
+    strong { color: var(--dark); font-weight: 600; }
+    .text-rose  { color: var(--rose); }
+    .text-mid   { color: var(--mid); }
+    .text-dark  { color: var(--dark); }
+    .fw-500     { font-weight: 500; }
+```
+
+Semua heading menggunakan font Playfair Display yang berkesan elegan dan artistik. Tag em diberi warna rose agar teks italic terlihat menonjol seperti pada judul section "Tentang Saya". Utility class warna memudahkan pemberian warna teks tanpa menulis CSS baru setiap saat.
+
+```style.CSS
+#nav {
+    padding: 1.1rem 0;
+    background: rgba(200, 185, 162, 0.92);
+    transition: all .35s;
+    }
+    #nav.scrolled {
+    padding: .7rem 0;
+    background: rgba(200, 185, 162, 0.92);
+    backdrop-filter: blur(5px);
+    box-shadow: 0 2px 20px var(--shadow);
+    border-bottom: 1px solid var(--border);
+    }
+    .navbar-brand {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--dark) !important;
+    text-decoration: none;
+    }
+    .nav-link {
+    font-size: .82rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--mid) !important;
+    padding: 7px 14px !important;
+    border-radius: 100px;
+    text-decoration: none;
+    transition: all .2s;
+    }
+    .nav-link:hover { background: var(--warm); color: var(--brown) !important; }
+```
+Navbar awalnya memiliki padding besar dan background semi-transparan krem coklat. Saat di-scroll, JavaScript menambah class .scrolled yang memicu CSS mengecilkan padding dan menambahkan efek blur di belakang navbar sehingga terlihat seperti kaca (glassmorphism). transition: all .35s membuat perubahan ini terasa halus. Link navbar dibuat uppercase dengan letter-spacing besar agar terlihat rapi dan elegan. Hover mendapat background hangat dengan border-radius bulat.
+
+```style.CSS
+ .btn-rose {
+    background: var(--brown);
+    color: var(--cream);
+    padding: 11px 26px;
+    border-radius: 100px;
+    text-decoration: none;
+    font-size: .85rem;
+    font-weight: 500;
+    transition: all .3s;
+    box-shadow: 0 4px 16px rgba(124,92,62,.25);
+    }
+    .btn-rose:hover { background: var(--rose); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(196,121,107,.35); color: #fff; }
+
+    .btn-ghost {
+    color: var(--mid);
+    padding: 11px 26px;
+    border-radius: 100px;
+    border: 1.5px solid var(--border);
+    text-decoration: none;
+    font-size: .85rem;
+    font-weight: 500;
+    transition: all .3s;
+    }
+    .btn-ghost:hover { background: var(--warm); border-color: var(--brown2); color: var(--brown); transform: translateY(-2px); }
+```
+.btn-rose adalah tombol solid berwarna coklat, saat hover berubah menjadi rose dan naik 2px ke atas dengan translateY(-2px) serta bayangan membesar. .btn-ghost adalah tombol transparan hanya dengan border tipis, saat hover mendapat background hangat. Keduanya menggunakan border-radius: 100px agar berbentuk pill/pil yang modern.
+
+```style.CSS
+.chip {
+    background: var(--warm);
+    border: 1px solid var(--border);
+    color: var(--mid);
+    padding: 5px 13px;
+    border-radius: 100px;
+    font-size: .78rem;
+    font-weight: 400;
+    display: inline-block;
+    }
+    .chip.small { font-size: .68rem; padding: 3px 10px; }
+    .chip-btn {
+    background: var(--cream);
+    border: 1.5px solid var(--border);
+    color: var(--light);
+    padding: 7px 18px;
+    border-radius: 100px;
+    font-size: .78rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all .2s;
+    }
+    .chip-btn:hover { border-color: var(--brown2); color: var(--brown); }
+    .chip-btn.active { background: var(--brown); border-color: var(--brown); color: var(--cream); }
+```
+.chip adalah label kecil berbentuk pil untuk tags dan kategori. .chip.small adalah versi lebih kecil untuk badge di card sertifikat. .chip-btn adalah chip yang bisa diklik sebagai tombol filter galeri, bedanya dari .chip adalah ada cursor: pointer dan efek hover. Saat filter aktif, Vue menambah class .active yang mengubah chip menjadi coklat solid dengan teks krem.
+
+```style.CSS
+    .section { padding: 100px 0; }
+    .bg-warm  { background: var(--warm); }
+    .sec-label {
+    display: inline-block;
+    font-size: .7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    color: var(--brown2);
+    margin-bottom: 10px;
+    }
+    .sec-title {
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 700;
+    letter-spacing: -1px;
+    color: var(--dark);
+    }
+```
+Setiap section diberi padding: 100px 0 agar konten tidak terlalu rapat antar section. .bg-warm memberi background krem hangat untuk section Galeri. .sec-label adalah label kecil di atas judul seperti "01 — About" yang dibuat sangat kecil, uppercase, dan letter-spacing besar agar terkesan premium. clamp(2rem, 5vw, 3rem) pada .sec-title membuat ukuran judul responsif otomatis, minimum 2rem di HP dan maksimum 3rem di desktop.
+
+```style.CSS
+  .hero {
+    min-height: 100vh;
+    background: #fdfaf5;
+    padding-top: 90px;
+    }
+    .hero-name {
+    font-size: clamp(3.5rem, 9vw, 6.5rem);
+    font-weight: 700;
+    line-height: .95;
+    letter-spacing: -3px;
+    color: var(--dark);
+    }
+    .hero-sub { font-size: .95rem; color: var(--light); line-height: 1.8; }
+
+    .hero-photo-wrap { position: relative; display: inline-block; }
+    .hero-photo {
+    width: 320px;
+    height: 400px;
+    object-fit: cover;
+    object-position: top;
+    border-radius: 24px 24px 80px 24px;
+    box-shadow: 0 24px 60px var(--shadow);
+    transition: transform .4s;
+    }
+    .hero-photo:hover { transform: scale(1.02); }
+    .hero-badge {
+    position: absolute;
+    bottom: -12px; left: 20px;
+    background: rgba(250,246,240,.95);
+    border: 1px solid var(--border);
+    backdrop-filter: blur(8px);
+    padding: 6px 14px;
+    border-radius: 100px;
+    font-size: .75rem;
+    color: var(--mid);
+    box-shadow: 0 4px 14px var(--shadow);
+    }
+```
+min-height: 100vh memastikan hero memenuhi seluruh tinggi layar. padding-top: 90px memberi ruang agar konten tidak tertutup navbar. Nama menggunakan clamp() agar responsif di semua ukuran layar. line-height: .95 membuat baris nama sangat rapat sehingga terlihat besar dan dramatis. Foto menggunakan border-radius: 24px 24px 80px 24px yang membuat hanya pojok kanan bawah melengkung sangat besar, menciptakan bentuk unik. Badge lokasi menggunakan position: absolute dengan bottom: -12px agar menggantung sedikit di bawah foto.
+
+```style.CSS
+ .info-card {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: var(--r);
+    padding: 16px 20px;
+    box-shadow: 0 4px 18px var(--shadow);
+    }
+    .info-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: .82rem;
+    }
+    .info-row:last-child { border: none; }
+    .info-label { color: var(--light); font-size: .72rem; text-transform: uppercase; letter-spacing: .5px; }
+    .info-val   { color: var(--dark);  font-weight: 500; text-align: right; }
+
+    .bio { font-size: .93rem; color: var(--mid); line-height: 1.9; text-align: justify; }
+    .block-title { font-size: .85rem; text-transform: uppercase; letter-spacing: 1.5px; color: var(--light); font-family: 'Inter', sans-serif; font-weight: 600; }
+
+    .skill-bar {
+    background: linear-gradient(90deg, var(--rose), var(--brown2));
+    border-radius: 10px;
+    width: 0;
+    transition: width 1.2s cubic-bezier(.22,1,.36,1);
+    }
+
+    .exp-item {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: var(--r);
+    padding: 14px 18px;
+    margin-bottom: 12px;
+    transition: border-color .3s;
+    }
+    .exp-item:hover { border-color: rgba(196,121,107,.35); }
+```
+Info card menggunakan display: flex dengan justify-content: space-between agar label di kiri dan nilai di kanan secara otomatis. :last-child menghapus border bawah pada baris terakhir. .bio menggunakan text-align: justify agar teks rata kiri kanan. Skill bar dimulai dari width: 0 lalu dianimasikan ke lebar sebenarnya oleh JavaScript, cubic-bezier(.22,1,.36,1) membuat gerakan terasa natural seperti melambat di akhir. Card pengalaman saat hover menampilkan border rose tipis.
+
+```style.CSS
+   .masonry {
+    columns: 3;
+    column-gap: 16px;
+    }
+    @media (max-width: 900px) { .masonry { columns: 2; } }
+    @media (max-width: 540px) { .masonry { columns: 1; } }
+
+    .m-item {
+    break-inside: avoid;
+    margin-bottom: 16px;
+    border-radius: var(--r);
+    overflow: hidden;
+    cursor: pointer;
+    position: relative;
+    box-shadow: 0 4px 18px var(--shadow);
+    transition: transform .35s, box-shadow .35s;
+    }
+    .m-item:hover { transform: translateY(-5px); box-shadow: 0 16px 40px rgba(45,32,24,.18); }
+    .m-item img { width: 100%; display: block; transition: transform .5s; }
+    .m-item:hover img { transform: scale(1.04); }
+
+    .m-hover {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(45,32,24,.75) 0%, transparent 55%);
+    border-radius: var(--r);
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    padding: 14px;
+    opacity: 0;
+    transition: opacity .3s;
+    }
+    .m-item:hover .m-hover { opacity: 1; }
+```
+Layout masonry menggunakan CSS columns: 3 bukan grid, sehingga gambar dengan tinggi berbeda-beda otomatis tersusun rapi tanpa celah seperti Pinterest. break-inside: avoid mencegah satu card terpotong ke kolom berikutnya. Media query mengubah jumlah kolom menjadi 2 di tablet dan 1 di HP. Saat hover card naik dan bayangan membesar, gambar sedikit zoom dengan scale(1.04). Overlay gelap gradient muncul dari bawah ke atas saat hover menggunakan perubahan opacity dari 0 ke 1.
+
+
+```style.CSS
+   .cert-card {
+    background: var(--cream);
+    border: 1.5px solid var(--border);
+    border-radius: var(--r);
+    padding: 22px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    transition: all .3s;
+    box-shadow: 0 3px 16px var(--shadow);
+    position: relative;
+    overflow: hidden;
+    }
+    .cert-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    }
+    .cert-card:hover { transform: translateY(-5px); box-shadow: 0 16px 40px rgba(45,32,24,.16); }
+
+    .ct-ui\/ux::before,
+    .ct-uiux::before     { background: linear-gradient(90deg, var(--rose), #b07db0); }
+    .ct-organisasi::before { background: linear-gradient(90deg, #7a9b7e, #aac2ad); }
+    .ct-seni::before     { background: linear-gradient(90deg, #c9a84c, var(--rose)); }
+    .ct-prestasi::before { background: linear-gradient(90deg, var(--brown2), var(--brown)); }
+
+    .cert-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+    }
+    .cert-icon {
+    width: 44px; height: 44px;
+    background: var(--warm);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    color: var(--rose);
+    }
+    .cert-name {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--dark);
+    margin-bottom: 8px;
+    line-height: 1.35;
+    }
+    .cert-foot {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: auto;
+    padding-top: 12px;
+    border-top: 1px solid var(--border);
+    }
+    .text-rose { color: var(--rose) !important; }
+```
+Card menggunakan display: flex; flex-direction: column agar .cert-foot selalu berada di paling bawah card meskipun panjang konten berbeda-beda, ini dicapai dengan margin-top: auto pada .cert-foot. garis warna di atas card menggunakan pseudo-element ::before yang diposisikan absolute di atas card dengan tinggi hanya 3px dan warna gradient berbeda tiap tipe sertifikat. overflow: hidden memastikan garis tidak keluar dari area card.
+
+```style.CSS
+.footer {
+    background: var(--dark);
+    padding: 50px 0 30px;
+    }
+    .footer-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: var(--cream);
+    }
+    .soc {
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    border: 1px solid rgba(250,246,240,.12);
+    background: rgba(250,246,240,.06);
+    color: rgba(250,246,240,.55);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    transition: all .25s;
+    }
+    .soc:hover { background: var(--rose); border-color: var(--rose); color: #fff; transform: translateY(-2px); }
+```
+Footer menggunakan background coklat gelap var(--dark). Ikon sosmed berbentuk lingkaran sempurna dengan border-radius: 50%, border dan background sangat transparan agar terkesan subtle di atas background gelap. display: inline-flex dengan align-items dan justify-content: center membuat icon selalu tepat di tengah lingkaran. Saat hover berubah penuh menjadi warna rose dan naik sedikit ke atas.
+
+```style.CSS
+    .lb-bg {
+    position: fixed; inset: 0;
+    background: rgba(20,10,5,.9);
+    backdrop-filter: blur(10px);
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .3s;
+    }
+    .lb-bg.show { opacity: 1; pointer-events: all; }
+
+    .lb-box {
+    background: var(--cream);
+    border-radius: 20px;
+    width: 100%;
+    max-width: 860px;
+    max-height: 90vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transform: scale(.94);
+    transition: transform .35s cubic-bezier(.22,1,.36,1);
+    box-shadow: 0 32px 80px rgba(0,0,0,.5);
+    position: relative;
+    }
+    .lb-box.show { transform: scale(1); }
+
+    .lb-img { width: 100%; max-height: 50vh; object-fit: cover; display: block; animation: fadeIn .3s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: scale(.98); } to { opacity: 1; transform: none; } }
+
+    .lb-close, .lb-prev, .lb-next {
+    position: absolute;
+    z-index: 5;
+    background: var(--cream);
+    border: 1.5px solid var(--border);
+    border-radius: 50%;
+    width: 38px; height: 38px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    font-size: .9rem;
+    color: var(--mid);
+    transition: all .2s;
+    }
+    .lb-close { top: 12px; right: 12px; }
+    .lb-prev  { top: 45%; left: 10px; transform: translateY(-50%); }
+    .lb-next  { top: 45%; right: 10px; transform: translateY(-50%); }
+    .lb-close:hover, .lb-prev:hover, .lb-next:hover { background: var(--rose); color: #fff; border-color: var(--rose); }
+
+    .lb-info { padding: 14px 18px 10px; }
+
+    .lb-thumbs {
+    display: flex;
+    gap: 7px;
+    padding: 10px 18px 14px;
+    overflow-x: auto;
+    border-top: 1px solid var(--border);
+    background: var(--warm);
+    }
+    .lb-thumbs::-webkit-scrollbar { height: 3px; }
+    .lb-thumbs::-webkit-scrollbar-thumb { background: var(--brown2); }
+
+    .lb-thumb {
+    width: 50px; height: 50px;
+    object-fit: cover;
+    border-radius: 8px;
+    cursor: pointer;
+    opacity: .5;
+    border: 2px solid transparent;
+    flex-shrink: 0;
+    transition: all .2s;
+    }
+    .lb-thumb:hover { opacity: .8; }
+    .lb-thumb.active { opacity: 1; border-color: var(--rose); transform: scale(1.08); }
+```
+Lightbox menggunakan position: fixed; inset: 0 agar menutupi seluruh layar di atas semua elemen lain dengan z-index: 2000. Awalnya opacity: 0 dan pointer-events: none agar tidak terlihat dan tidak bisa diklik. Saat aktif class .show mengubah keduanya. backdrop-filter: blur(10px) mengaburkan konten di belakang overlay. Box muncul dengan animasi scale dari 0.94 ke 1 dengan cubic-bezier yang terasa elastis. Setiap gambar baru dianimasikan dengan @keyframes fadeIn. Thumbnail aktif diberi border rose dan diperbesar dengan scale(1.08).
+
+```style.CSS
+ @media (max-width: 768px) {
+    .section { padding: 70px 0; }
+    .hero-photo { width: 240px; height: 300px; }
+    .hero-name { letter-spacing: -2px; }
+    }
+```
+kode di atas yaitu Media ini aktif saat lebar layar di bawah 768px yaitu ukuran HP. Padding section dikurangi dari 100px menjadi 70px agar tidak boros ruang di layar kecil. Foto hero diperkecil dari 320x400px menjadi 240x300px. Letter-spacing nama dikurangi dari -3px menjadi -2px karena di layar kecil teks besar dengan spasi terlalu lebar bisa keluar dari layar.
+
+## Dokumentasi Tampilan Setiap Section dan Fitur
