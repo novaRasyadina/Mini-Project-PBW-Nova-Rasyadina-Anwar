@@ -839,3 +839,45 @@ Lightbox menggunakan position: fixed; inset: 0 agar menutupi seluruh layar di at
 kode di atas yaitu Media ini aktif saat lebar layar di bawah 768px yaitu ukuran HP. Padding section dikurangi dari 100px menjadi 70px agar tidak boros ruang di layar kecil. Foto hero diperkecil dari 320x400px menjadi 240x300px. Letter-spacing nama dikurangi dari -3px menjadi -2px karena di layar kecil teks besar dengan spasi terlalu lebar bisa keluar dari layar.
 
 ## Dokumentasi Tampilan Setiap Section dan Fitur
+##### Tampilan Desktop
+
+<img width="1920" height="916" alt="{281336DC-A073-4EB6-9E71-F1CF12277E83}" src="https://github.com/user-attachments/assets/1ea5d91a-275e-497c-a7e5-b15db06c3183" />
+
+##### Tampilan Mengecil/Mobile
+
+<img width="960" height="908" alt="{321C2C09-3174-4168-ADA4-4233BA4E3B56}" src="https://github.com/user-attachments/assets/73edc841-31ae-42e1-9002-8bd2381ae909" />
+
+##### Fotur togler jika tampilan diperkecil
+
+<img width="961" height="701" alt="{EC4CAA0D-69A0-49CD-B328-9AEB83B99428}" src="https://github.com/user-attachments/assets/12e6e75d-17c5-4f90-afd0-952a27e78577" />
+
+##### About
+
+<img width="1919" height="911" alt="{71D839D2-CF40-4AF6-BAF7-9929F0474FB4}" src="https://github.com/user-attachments/assets/139b0d7e-3ef6-4029-bd54-b6d52b87f1b2" />
+<img width="1919" height="909" alt="{BDE8CD79-A66B-4132-8C7C-34B9CE59FC9C}" src="https://github.com/user-attachments/assets/dca9afa4-7c5a-421f-9622-aae55a1878dd" />
+
+##### Galeri Karya
+
+<img width="1920" height="922" alt="{DB8F0695-D4ED-4AD8-A152-43D1E5FB65B9}" src="https://github.com/user-attachments/assets/dd1b6f4d-1cdc-4ba5-b1e3-917663d0013f" />
+<img width="959" height="909" alt="{A996EC27-64EA-45EB-A14D-515D35AB3CA2}" src="https://github.com/user-attachments/assets/dda3b7fd-d026-4be8-bf58-63b6c46a295d" />
+
+##### Fitur lihat detail karya
+
+<img width="1920" height="909" alt="{ECBAD2BE-3AF4-40E0-A9C4-4DBD769BA3EB}" src="https://github.com/user-attachments/assets/1ee79049-ccc6-4f66-a447-c90956ce54e5" />
+
+##### Fotur filtering berdasarkan kategori karya
+
+<img width="1920" height="920" alt="{259D04E9-2833-4372-848C-1D319AA9FAA8}" src="https://github.com/user-attachments/assets/d8a3bdba-85af-4e10-90c6-032060bc752c" />
+<img width="961" height="913" alt="{73305E5C-C545-4C81-84BB-328E37AA2ACF}" src="https://github.com/user-attachments/assets/d68a1986-8e06-4579-82f1-12985bbd11ce" />
+
+##### Sertificate
+<img width="1920" height="913" alt="{4378CBDD-4D07-48CD-91BB-FAAB0B21A3E0}" src="https://github.com/user-attachments/assets/5d9ccbc4-ca68-4f7e-a3d1-586528068bb7" />
+<img width="960" height="910" alt="{706E78A8-ECFA-4D0E-BBEE-3F660692320D}" src="https://github.com/user-attachments/assets/7fe6a9b4-fd1f-4f65-90ac-d53e8fcc7ef9" />
+
+##### Footer
+
+<img width="1920" height="913" alt="{3570FD96-AB2C-4F8A-AB12-09C7E2C40968}" src="https://github.com/user-attachments/assets/faad4c0b-8ee7-4d33-9903-2e0718738d2f" />
+
+##### Fitur di Footer Mengarah Ke Halaman Profil Sosial media
+
+<img width="1920" height="337" alt="{CBE7052A-2249-461C-8B44-8FB55FA77EDE}" src="https://github.com/user-attachments/assets/ddfe0f57-bec4-4f83-8f70-35305d04c6c2" />
